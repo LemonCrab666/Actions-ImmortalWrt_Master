@@ -198,7 +198,7 @@ jobs:
         token: ${{ env.TELEGRAM_BOT_TOKEN }}  # 替换为你的Telegram Bot Token  
         message: |
             基于ImmortalWrt master的X86 OpenWrt纯净版更新:
-            https://github.com/LemonCrab666/Actions-OpenWrt/releases/tag/${{ steps.tag.outputs.release_tag }}
+            https://github.com/LemonCrab666/Actions-ImmortalWrt/releases/tag/${{ steps.tag.outputs.release_tag }}
             更新日志：
             更新ImmortalWrt最新master源码
             Commit: ${{ env.LATEST_COMMIT }}  
