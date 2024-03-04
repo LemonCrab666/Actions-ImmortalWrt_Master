@@ -20,7 +20,7 @@ on:
         default: 'false'
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
@@ -182,8 +182,8 @@ jobs:
 
     - name: Get the latest commit message  
       run: |  
-        LATEST_COMMIT=$(curl -s https://api.github.com/repos/coolsnowwolf/lede/commits | jq -r '.[0].commit.message')  
-        LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/coolsnowwolf/lede/commits | jq -r '.[0].html_url')  
+        LATEST_COMMIT=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].commit.message')  
+        LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].html_url')  
         echo "LATEST_COMMIT=${LATEST_COMMIT}" >> $GITHUB_ENV  
         echo "LATEST_COMMIT_URL=${LATEST_COMMIT_URL}" >> $GITHUB_ENV  
 
@@ -197,9 +197,9 @@ jobs:
         to: ${{ env.TELEGRAM_CHAT_ID }}  # 替换为你的Telegram聊天ID或用户名  
         token: ${{ env.TELEGRAM_BOT_TOKEN }}  # 替换为你的Telegram Bot Token  
         message: |
-            基于Lean's Lede的X86 OpenWrt纯净版更新:
+            基于ImmortalWrt master的X86 OpenWrt纯净版更新:
             https://github.com/LemonCrab666/Actions-OpenWrt/releases/tag/${{ steps.tag.outputs.release_tag }}
             更新日志：
-            更新Lean's Lede最新源码
+            更新ImmortalWrt最新master源码
             Commit: ${{ env.LATEST_COMMIT }}  
             URL: ${{ env.LATEST_COMMIT_URL }}  
