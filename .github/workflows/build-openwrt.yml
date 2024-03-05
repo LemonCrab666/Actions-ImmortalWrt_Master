@@ -168,7 +168,7 @@ jobs:
         fi
         COMMITS=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits?per_page=1 | jq -r '.[0].commit.message') 
         echo "::set-output name=commits::$COMMITS"
-        echo "更新ImmortalWrt最新源码" >> release.txt
+        echo "更新immortalwrt最新master源码" >> release.txt
         echo "$COMMITS" >> release.txt  
         echo "::set-output name=status::success"
       env:
@@ -193,18 +193,16 @@ jobs:
     - name: Get the latest commit message  
       run: |  
         LATEST_COMMIT=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].commit.message')  
-        LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].html_url')
-        echo "LATEST_COMMIT=${LATEST_COMMIT}" >> $GITHUB_ENV
-        echo "LATEST_COMMIT_URL=${LATEST_COMMIT_URL}" >> $GITHUB_ENV
+        LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].html_url')  
+        echo "LATEST_COMMIT=${LATEST_COMMIT}" >> $GITHUB_ENV  
+        echo "LATEST_COMMIT_URL=${LATEST_COMMIT_URL}" >> $GITHUB_ENV  
 
     - name: Send Telegram notification  
-      if: steps.tag.outputs.status == 'success' && !cancelled()
-      uses: appleboy/telegram-action@master
+      if: steps.tag.outputs.status == 'success' && !cancelled()  
+      uses: appleboy/telegram-action@master 
       env:   
         TELEGRAM_CHAT_ID: ${{ secrets.ID }}  
         TELEGRAM_BOT_TOKEN: ${{ secrets.TOKEN }} 
-        LATEST_COMMIT: ${{ env.LATEST_COMMIT }}
-        LATEST_COMMIT_URL: ${{ env.LATEST_COMMIT_URL }}
       with:  
         to: ${{ env.TELEGRAM_CHAT_ID }}  # 替换为你的Telegram聊天ID或用户名  
         token: ${{ env.TELEGRAM_BOT_TOKEN }}  # 替换为你的Telegram Bot Token  
@@ -213,5 +211,5 @@ jobs:
             https://github.com/LemonCrab666/Actions-ImmortalWrt/releases/tag/${{ steps.tag.outputs.release_tag }}
             更新日志：
             更新ImmortalWrt最新master源码
-            Commit: ${{ env.LATEST_COMMIT }}
-            URL: ${{ env.LATEST_COMMIT_URL }}
+            Commit: ${{ env.LATEST_COMMIT }}  
+            URL: ${{ env.LATEST_COMMIT_URL }}  
