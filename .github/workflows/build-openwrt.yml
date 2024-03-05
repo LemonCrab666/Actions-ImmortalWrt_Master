@@ -160,9 +160,19 @@ jobs:
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
-        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        if [ $UPLOAD_COWTRANSFER = true ]; then
+          echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
+        fi
+        if [ $UPLOAD_WETRANSFER = true ]; then
+          echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        fi
+        COMMITS=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits?per_page=1 | jq -r '.[0].commit.message') 
+        echo "::set-output name=commits::$COMMITS"
+        echo "更新ImmortalWrt最新源码" >> release.txt
+        echo "$COMMITS" >> release.txt  
         echo "::set-output name=status::success"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v1
