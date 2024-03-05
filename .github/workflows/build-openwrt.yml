@@ -194,8 +194,8 @@ jobs:
       run: |  
         LATEST_COMMIT=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].commit.message')  
         LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].html_url')  
-        echo "LATEST_COMMIT=${LATEST_COMMIT}" >> $GITHUB_ENV  
-        echo "LATEST_COMMIT_URL=${LATEST_COMMIT_URL}" >> $GITHUB_ENV  
+        echo "LATEST_COMMIT='${LATEST_COMMIT}'" >> $GITHUB_ENV  
+        echo "LATEST_COMMIT_URL='${LATEST_COMMIT_URL}'" >> $GITHUB_ENV    
 
     - name: Send Telegram notification  
       if: steps.tag.outputs.status == 'success' && !cancelled()  
