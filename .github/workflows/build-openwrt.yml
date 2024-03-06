@@ -173,6 +173,8 @@ jobs:
         echo "status=success" >> $GITHUB_ENV
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        UPLOAD_COWTRANSFER: ${{ env.UPLOAD_COWTRANSFER }}
+        UPLOAD_WETRANSFER: ${{ env.UPLOAD_WETRANSFER }}
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v1
