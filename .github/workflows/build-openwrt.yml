@@ -192,10 +192,10 @@ jobs:
 
     - name: Get the latest commit message  
       run: |  
-        LATEST_COMMIT=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].commit.message')  
-        LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].html_url')  
-        echo "::set-output name=commit_message::${LATEST_COMMIT}"
-        echo "::set-output name=commit_url::${LATEST_COMMIT_URL}"
+        LATEST_UPDATE_INFO=$(curl -s https://github.com/immortalwrt/immortalwrt/commit/master | grep -oP 'title="\K[^"]+' | head -n 1)
+        LATEST_UPDATE_INFO_URL=$(curl -s https://github.com/immortalwrt/immortalwrt/commit/master | grep -oP 'href="\K[^"]+' | head -n 1)
+        echo "::set-output name=update_info::${LATEST_UPDATE_INFO}"
+        echo "::set-output name=update_info_url::${LATEST_UPDATE_INFO_URL}"
 
     - name: Send Telegram notification  
       if: steps.tag.outputs.status == 'success' && !cancelled()  
@@ -211,5 +211,5 @@ jobs:
             https://github.com/LemonCrab666/Actions-ImmortalWrt/releases/tag/${{ steps.tag.outputs.release_tag }}
             更新日志：
             更新ImmortalWrt最新master源码
-            Commit: ${{ steps.get_commit_info.outputs.commit_message }}  
-            URL: ${{ steps.get_commit_info.outputs.commit_url }}
+            最新更新日志：${{ steps.get_commit_info.outputs.update_info }}
+            URL: ${{ steps.get_commit_info.outputs.update_info_url }}
