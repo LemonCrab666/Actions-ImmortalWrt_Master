@@ -104,7 +104,7 @@ jobs:
         cd openwrt
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
-        echo "status=success" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
@@ -127,7 +127,7 @@ jobs:
         cd openwrt/bin/targets/*/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "status=success" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
@@ -158,7 +158,7 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
+        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
         if [ $UPLOAD_COWTRANSFER = true ]; then
           echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
@@ -167,14 +167,15 @@ jobs:
           echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
         fi
         COMMITS=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits?per_page=1 | jq -r '.[0].commit.message') 
-        echo "commits=$COMMITS" >> $GITHUB_ENV
-        echo "更新immortalwrt最新master源码" >> release.txt
-        echo "$COMMITS" >> release.txt  
-        echo "status=success" >> $GITHUB_ENV
+        COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits?per_page=1 | jq -r '.[0].html_url')  
+        echo "::set-output name=commits::$COMMITS"
+        echo "::set-output name=commit_url::$COMMIT_URL"
+        echo "更新ImmortalWrt master最新源码" >> release.txt
+        echo "源码更新内容: $COMMITS" >> release.txt  
+        echo "查看更新日志: $COMMIT_URL" >> release.txt
+        echo "::set-output name=status::success"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        UPLOAD_COWTRANSFER: ${{ env.UPLOAD_COWTRANSFER }}
-        UPLOAD_WETRANSFER: ${{ env.UPLOAD_WETRANSFER }}
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@v1
@@ -194,11 +195,10 @@ jobs:
 
     - name: Get the latest commit message  
       run: |  
-        COMMIT_DATA=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits)
-        LATEST_COMMIT=$(echo "$COMMIT_DATA" | jq -r '.[0].commit.message')
-        LATEST_COMMIT_URL=$(echo "$COMMIT_DATA" | jq -r '.[0].html_url')
-        echo "LATEST_COMMIT=${LATEST_COMMIT}" >> $GITHUB_ENV 
-        echo "LATEST_COMMIT_URL=${LATEST_COMMIT_URL}" >> $GITHUB_ENV
+        LATEST_COMMIT=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].commit.message')  
+        LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].html_url')  
+        echo "LATEST_COMMIT=${LATEST_COMMIT}" >> $GITHUB_ENV  
+        echo "LATEST_COMMIT_URL=${LATEST_COMMIT_URL}" >> $GITHUB_ENV  
 
     - name: Send Telegram notification  
       if: steps.tag.outputs.status == 'success' && !cancelled()  
@@ -213,6 +213,6 @@ jobs:
             基于ImmortalWrt master的X86 OpenWrt纯净版更新:
             https://github.com/LemonCrab666/Actions-ImmortalWrt/releases/tag/${{ steps.tag.outputs.release_tag }}
             更新日志：
-            更新ImmortalWrt最新master源码
-            提交信息: ${{ env.LATEST_COMMIT }}  
-            链接: ${{ env.LATEST_COMMIT_URL }}  
+            更新ImmortalWrt master最新源码
+            Commit: ${{ env.LATEST_COMMIT }}  
+            URL: ${{ env.LATEST_COMMIT_URL }}  
