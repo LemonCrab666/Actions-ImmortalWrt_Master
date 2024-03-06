@@ -195,10 +195,12 @@ jobs:
 
     - name: Get the latest commit message  
       run: |  
-        LATEST_COMMIT=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].commit.message')  
-        LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits | jq -r '.[0].html_url')  
+        LATEST_COMMIT=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits?per_page=1 | jq -r '.[0].commit.message') 
+        LATEST_COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits?per_page=1 | jq -r '.[0].html_url')  
         echo "LATEST_COMMIT=${LATEST_COMMIT}" >> $GITHUB_ENV  
         echo "LATEST_COMMIT_URL=${LATEST_COMMIT_URL}" >> $GITHUB_ENV  
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Send Telegram notification  
       if: steps.tag.outputs.status == 'success' && !cancelled()  
