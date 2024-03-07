@@ -1,4 +1,4 @@
-# Actions-OpenWrt
+# Actions-ImmortalWrt
 
 使用[P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)的模板对ImmortalWrt源码进行编译
 
