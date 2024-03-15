@@ -170,7 +170,9 @@ jobs:
         COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits?per_page=1 | jq -r '.[0].html_url')  
         echo "::set-output name=commits::$COMMITS"
         echo "::set-output name=commit_url::$COMMIT_URL"
-        echo "更新ImmortalWrt master最新源码\n源码更新内容: $COMMITS\n查看更新日志: $COMMIT_URL" >> release.txt
+        echo "更新ImmortalWrt master最新源码" >> release.txt
+        echo "源码更新内容: $COMMITS" >> release.txt  
+        echo "查看更新日志: $COMMIT_URL" >> release.txt
         echo "::set-output name=status::success"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
