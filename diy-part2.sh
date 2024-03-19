@@ -11,7 +11,7 @@
 #
 
 # 更改默认IP
-#sed -i 's/192.168.1.1/192.168.50.5/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.123.2/g' package/base-files/files/bin/config_generate
 
 rm -rf feeds/luci/applications/luci-app-openclash
 git clone -b master --single-branch --filter=blob:none https://github.com/vernesong/OpenClash.git feeds/luci/applications/luci-app-openclash
