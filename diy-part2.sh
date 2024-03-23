@@ -15,4 +15,8 @@
 
 rm -rf feeds/luci/applications/luci-app-openclash
 git clone -b master --single-branch --filter=blob:none https://github.com/vernesong/OpenClash.git feeds/luci/applications/luci-app-openclash
+
 git clone https://github.com/rufengsuixing/luci-app-adguardhome package/luci-app-adguardhome
+
+rm -rf feeds/luci/applications/luci-app-openvpn-server
+git clone https://github.com/bozheng1988/openwrt-luci-app-openvpn-server.git feeds/luci/applications/luci-app-openvpn-server
