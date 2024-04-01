@@ -21,7 +21,7 @@ on:
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: v23.05.2
+  REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
@@ -204,7 +204,7 @@ jobs:
         token: ${{ env.TELEGRAM_BOT_TOKEN }}  # 替换为你的Telegram Bot Token  
         message: |
             基于ImmortalWrt master的X86_64 OpenWrt纯净版更新:
-            https://github.com/LemonCrab666/Actions-ImmortalWrt/releases/tag/${{ steps.tag.outputs.release_tag }}
+            https://github.com/LemonCrab666/Actions-ImmortalWrt_master/releases/tag/${{ steps.tag.outputs.release_tag }}
             更新日志：
             更新ImmortalWrt master最新源码
             源码更新内容: ${{ steps.tag.outputs.commits }}
