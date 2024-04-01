@@ -170,7 +170,7 @@ jobs:
         COMMIT_URL=$(curl -s https://api.github.com/repos/immortalwrt/immortalwrt/commits?per_page=1 | jq -r '.[0].html_url')  
         echo "::set-output name=commits::$COMMITS"
         echo "::set-output name=commit_url::$COMMIT_URL"
-        echo "更新ImmortalWrt master最新源码" >> release.txt
+        echo "更新ImmortalWrt_master最新源码" >> release.txt
         echo "源码更新内容: $COMMITS" >> release.txt  
         echo "查看更新日志: $COMMIT_URL" >> release.txt
         echo "::set-output name=status::success"
@@ -204,8 +204,8 @@ jobs:
         token: ${{ env.TELEGRAM_BOT_TOKEN }}  # 替换为你的Telegram Bot Token  
         message: |
             基于ImmortalWrt master的X86_64 OpenWrt纯净版更新:
-            https://github.com/LemonCrab666/Actions-ImmortalWrt_master/releases/tag/${{ steps.tag.outputs.release_tag }}
+            https://github.com/LemonCrab666/Actions-ImmortalWrt_Master/releases/tag/${{ steps.tag.outputs.release_tag }}
             更新日志：
-            更新ImmortalWrt master最新源码
+            更新ImmortalWrt_master最新源码
             源码更新内容: ${{ steps.tag.outputs.commits }}
             查看更新日志: ${{ steps.tag.outputs.commit_url }}
