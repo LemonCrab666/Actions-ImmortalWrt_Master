@@ -1,6 +1,6 @@
 # Actions-ImmortalWrt
 
-使用[P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)的模板对ImmortalWrt源码进行编译
+使用[P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)的模板对ImmortalWrt_Master源码进行编译
 
 ## 纯净版X86_64 ImmortalWrt
 已包含插件wireguard、ttyd终端、openclash、微信推送、动态dns、网络唤醒、upnp、openvpn服务器、kms服务器
